@@ -1,10 +1,10 @@
 /***********************************************************
-taken from "Extension Table Built-ins for Prolog", 
+taken from "Extension Table Built-ins for Prolog",
 by Chang-Guan Fa & Suzanne W. Dietrich
 Software Practive and Experience, Vol22, No.7, 573-597, 1992.
 ***********************************************************/
 
-:- ['tabling.pl','testlib.pl','table_print.pl'].
+:- ['tabling.pl'].
 
 go:-
     cputime(Start),

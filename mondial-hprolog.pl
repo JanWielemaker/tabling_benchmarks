@@ -1,5 +1,4 @@
-:- ['tabling.pl','testlib.pl','table_print.pl'].
-:- use_module(library(format)).
+:- ['tabling.pl'].
 
 go :-
   cputime(Start),
@@ -21,7 +20,7 @@ go :-
 
 % time_query:- queryrule(X,Y,Z),
 %              fail.
-% 
+%
 % debug_query:- queryrule(X,Y,Z),
 %               query_output([X, ' - ', Y, ' - ', Z, '\n']),
 %             fail.
@@ -43,8 +42,8 @@ isa(prov(Y,X),provi):- p(_,_,X,Y).
 att(prov(Y,X),number,A):- p(A,_,X,Y).
 att(prov(Y,X),number2,D):- p(_,D,X,Y).
 
-p_aux(A,D,X,Y):- 
-   province(Y,X,D,_,_,_), 
+p_aux(A,D,X,Y):-
+   province(Y,X,D,_,_,_),
    city(_,X,Y,A,_,_).
 
 queryrule_aux(X,A,D):-

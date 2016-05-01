@@ -1,6 +1,5 @@
 
-:- ['tabling.pl','testlib.pl','table_print.pl'].
-:- use_module(library(format)).
+:- ['tabling.pl'].
 
 variant_for_xsb_comparison(c(_)).
 

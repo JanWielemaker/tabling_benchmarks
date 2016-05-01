@@ -1,5 +1,4 @@
-:- ['tabling.pl','testlib2.pl'].
-:- use_module(library(format)).
+:- ['tabling.pl'].
 
 a(X,Y) :-
   start_tabling(a(X,Y),p_aux(X,Y)).
@@ -8,9 +7,9 @@ p_aux(X,Y) :-
   a(X,Z),  a(Z,Y).
 p_aux(X,Y) :- e(X,Y).
 
-go :- 
+go :-
   cputime(Start),
-  a(X,Y),
+  a(_X,_Y),
   cputime(End),
   T is End-Start,
   write('% 100loop-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.

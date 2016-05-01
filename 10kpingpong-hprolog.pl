@@ -1,7 +1,6 @@
-:- ['tabling.pl','testlib.pl','table_print.pl'].
-:- use_module(library(format)).
+:- ['tabling.pl'].
 
-go :- 
+go :-
   cputime(Start),
   d(_X),
   cputime(End),
