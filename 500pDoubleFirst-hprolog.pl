@@ -9,7 +9,7 @@ p_aux(X,Y) :- e(X,Y).
 
 go :-
   cputime(Start),
-  a(X,Y),
+  a(_X,_Y),
   cputime(End),
   T is End-Start,
   write('% 500vertices-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
