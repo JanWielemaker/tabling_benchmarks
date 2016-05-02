@@ -12,11 +12,11 @@
 
 go :- 
     N = 750,
-    write('OK, N = '), writeln(N),
+    verbose('OK, N = '), verboseln(N),
     cputime(Start),
     fib(N, Fib), 
     cputime(End),
-    write('Fib of '), write(N), write(' is '), write(Fib),nl,
+    verbose('Fib of '), verbose(N), verbose(' is '), verboseln(Fib),
     T is End-Start,
     print_time(T).
 

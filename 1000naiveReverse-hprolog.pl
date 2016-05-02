@@ -11,7 +11,7 @@ go:-
     data(List),
     nrev(List,Result),
     cputime(End),
-    write('% Result = '), writeln(Result),
+    verbose('% Result = '), verboseln(Result),
     T is (End-Start),
     print_time(T).
 

@@ -6,5 +6,5 @@ fi
 
 for f in $tests; do
   echo "TEST $f ..."
-  swipl -g go,halt -G8g $f | grep 'milliseconds'
+  swipl -g go,halt -G8g $f
 done
