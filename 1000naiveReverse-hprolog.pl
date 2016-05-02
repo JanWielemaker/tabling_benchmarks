@@ -13,7 +13,7 @@ go:-
     cputime(End),
     write('% Result = '), writeln(Result),
     T is (End-Start),
-    write('% 1000naiveReverse-hprolog.pl: execution time ='),write(T), write(' milliseconds'),nl.
+    print_time(T).
 
 nrev(X,Y) :- start_tabling(nrev(X,Y),nrev_aux(X,Y)).
 

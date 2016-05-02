@@ -12,7 +12,7 @@ go :-
   a(_X,_Y),
   cputime(End),
   T is End-Start,
-  write('% 100loop-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 % See print_answers_for_xsb_comparison/0 in testlib2.pl
 variant_for_xsb_comparison(a(_,_)).

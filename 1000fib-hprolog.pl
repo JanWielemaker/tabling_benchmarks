@@ -10,15 +10,15 @@
 
 :- ['./tabling.pl'].
 
-go :- 
+go :-
     N = 1000,
     write('OK, N = '), writeln(N),
     cputime(Start),
-    fib(N, Fib), 
+    fib(N, Fib),
     cputime(End),
     write('Fib of '), write(N), write(' is '), write(Fib),nl,
     T is End-Start,
-    write('% 1000fib-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+    print_time(T).
 
 fib(X,Y) :-
   start_tabling(fib(X,Y),fib_aux(X,Y)).

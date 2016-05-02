@@ -18,7 +18,7 @@ go :-
     cputime(End),
     write('Fib of '), write(N), write(' is '), write(Fib),nl,
     T is End-Start,
-    write('% 10kfib-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+    print_time(T).
 
 fib(X,Y) :-
   start_tabling(fib(X,Y),fib_aux(X,Y)).

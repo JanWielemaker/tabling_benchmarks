@@ -12,7 +12,7 @@ go :-
   a(_X,_Y),
   cputime(End),
   T is End-Start,
-  write('% 500vertices-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 variant_for_xsb_comparison(a(_,_)).
 

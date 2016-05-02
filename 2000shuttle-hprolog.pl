@@ -8,7 +8,7 @@ go :-
   c(_X),
   cputime(End),
   T is End-Start,
-  write('% 2000shuttle-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 c(X) :-
   start_tabling(c(X),c_aux(X)).

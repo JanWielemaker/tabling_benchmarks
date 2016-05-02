@@ -11,7 +11,7 @@ go:-
     a(1,10001),
     cputime(End),
     T is (End-Start),
-    write('% 10krecognize-hprolog.pl: execution time ='),write(T), write(' milliseconds'),nl.
+    print_time(T).
 
 a(F,L) :- start_tabling(a(F,L),a_aux(F,L)).
 

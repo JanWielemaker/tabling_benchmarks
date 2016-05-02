@@ -5,7 +5,7 @@ go :-
   queryrule(_X,_Y,_Z),
   cputime(End),
   T is End - Start,
-  write('% rocha8-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 % TODO: variant_for_xsb_comparison(TODO).
 

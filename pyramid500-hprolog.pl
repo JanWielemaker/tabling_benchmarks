@@ -5,7 +5,7 @@ go :-
   path(_X,_Y),
   cputime(End),
   T is End-Start,
-  write('% rocha7-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 variant_for_xsb_comparison(path(_,_)).
 

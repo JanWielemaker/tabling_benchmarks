@@ -5,7 +5,7 @@ go :-
   d(_X),
   cputime(End),
   T is End-Start,
-  write('% 10kpingpong-hprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  print_time(T).
 
 variant_for_xsb_comparison(d(_)).
 variant_for_xsb_comparison(e(_)).

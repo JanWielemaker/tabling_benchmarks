@@ -5,6 +5,6 @@ else
 fi
 
 for f in $tests; do
-# echo "TEST $f ..."
-  swipl -g go,halt -G8g $f | grep 'execution time'
+  echo "TEST $f ..."
+  swipl -g go,halt -G8g $f | grep 'milliseconds'
 done
