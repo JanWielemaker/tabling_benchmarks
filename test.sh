@@ -3,7 +3,6 @@ if [ -z "$1" ]; then
 	 750fib
 	 1000fib
 	 10kfib
-	 10krecognize
 	 20krecognize
 	 50krecognize
 	 500naiveReverse

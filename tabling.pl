@@ -1,5 +1,5 @@
 :- use_module(procps).
-:- use_module('../tabling_library/tabling').
+:- use_module('../tabling_library-c-worklist/tabling').
 
 cputime(T) :-
 	statistics(runtime, [T,_]).
