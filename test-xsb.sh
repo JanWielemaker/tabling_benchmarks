@@ -1,4 +1,4 @@
-SWIPL=${SWIPL-swipl}
+XSB=${XSB-xsb}
 
 if [ -z "$1" ]; then
   tests="500fib
@@ -31,5 +31,9 @@ fi
 
 for f in $tests; do
 # echo $SWIPL running test $f
-  $SWIPL -O -g go,halt --stack_limit=8g $f-hprolog.pl || exit 1
+  ${XSB} << EOF
+['$f-xsb.pl'].
+go.
+halt.
+EOF
 done
