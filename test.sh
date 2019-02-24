@@ -1,3 +1,5 @@
+SWIPL=${SWIPL-swipl}
+
 if [ -z "$1" ]; then
   tests="500fib
 	 750fib
@@ -28,6 +30,6 @@ else
 fi
 
 for f in $tests; do
-# echo "TEST $f ..."
-  swipl -g go,halt -G8g $f-hprolog.pl
+# echo $SWIPL running test $f
+  $SWIPL -g go,halt --stack_limit=8g $f-hprolog.pl || exit 1
 done

@@ -1,5 +1,4 @@
 :- use_module(procps).
-:- use_module('../tabling_library-c-worklist/tabling').
 
 cputime(T) :-
 	statistics(runtime, [T,_]).
@@ -13,7 +12,10 @@ rss(Bytes) :-
 print_rss(RSS0) :-
 	rss(RSS1),
 	RSS is round((RSS1-RSS0)/1024),
-	format(' ~`.t ~D KBytes RSS~70|~n', [RSS]).
+	(   getenv('CSV', yes)
+	->  format(',~d~n', [RSS])
+	;   format(' ~`.t ~D KBytes RSS~70|~n', [RSS])
+	).
 
 term_expansion((go:-Body), (go:-(rss(RSS0),Body,print_rss(RSS0)))).
 
@@ -22,7 +24,10 @@ term_expansion((go:-Body), (go:-(rss(RSS0),Body,print_rss(RSS0)))).
 print_time(T) :-
 	source_file(go, File),
 	file_base_name(File, Base),
-	format('~w ~`.t ~D msec~45|', [Base, T]).
+	(   getenv('CSV', yes)
+	->  format('~w,~d', [Base, T])
+	;   format('~w ~`.t ~D msec~45|', [Base, T])
+	).
 
 verbose(T) :-
 	getenv('VERBOSE', y), !,
