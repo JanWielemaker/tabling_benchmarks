@@ -1,4 +1,6 @@
 SWIPL=${SWIPL-swipl}
+BASE=${BASE-stable.csv}
+CSV=${CSV-times-$$.csv}
 
 if [ -z "$1" ]; then
   tests="500fib
@@ -28,6 +30,9 @@ if [ -z "$1" ]; then
 else
   tests="$(echo "$*" | sed 's/-hprolog.pl//g')"
 fi
+
+export CSV BASE
+echo "# Reporting relative to $BASE; storing in $CSV"
 
 for f in $tests; do
 # echo $SWIPL running test $f

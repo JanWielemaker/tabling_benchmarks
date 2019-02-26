@@ -1,5 +1,8 @@
 :- use_module(procps).
 
+:- dynamic
+	base/3.
+
 cputime(T) :-
 	statistics(runtime, [T,_]).
 
@@ -14,21 +17,59 @@ print_rss(RSS0) :-
 	RSS is round((RSS1-RSS0)/1024),
 	(   getenv('CSV', yes)
 	->  format(',~d~n', [RSS])
-	;   format(' ~`.t ~D KBytes RSS~70|~n', [RSS])
+	;   getenv('CSV', CSVFile)
+	->  setup_call_cleanup(
+		open(CSVFile, append, Out),
+		format(Out, ',~d~n', [RSS]),
+		close(Out)),
+	    human_rss(RSS)
+	;   human_rss(RSS)
 	).
+
+human_rss(RSS) :-
+	base(_, _, RSS0),
+	Rel is 100*(RSS/RSS0),
+	format(' ~`.t ~DKb RSS~70|~t(~0f%~6+)~n', [RSS, Rel]).
+human_rss(RSS) :-
+	format(' ~`.t ~DKb RSS~70|~n', [RSS]).
 
 term_expansion((go:-Body), (go:-(rss(RSS0),Body,print_rss(RSS0)))).
 
-
-
 print_time(T) :-
+	current_test(Test),
+	(   getenv('CSV', yes)
+	->  format('~w,~d', [Test, T])
+	;   getenv('CSV', CSVFile)
+	->  setup_call_cleanup(
+		open(CSVFile, append, Out),
+		format(Out, '~w,~d', [Test, T]),
+		close(Out)),
+	    human_time(Test, T)
+	;   human_time(Test, T)
+	).
+
+current_test(Test) :-
 	source_file(go, File),
 	file_base_name(File, Base),
-	atom_concat(Test, '-hprolog.pl', Base),
-	(   getenv('CSV', yes)
-	->  format('~w,~d', [Base, T])
-	;   format('~w ~`.t ~D msec~45|', [Test, T])
-	).
+	atom_concat(Test, '-hprolog.pl', Base).
+
+human_time(Test, T) :-
+	base_performance(Test, TB, RSS),
+	assertz(base(Test, TB, RSS)),
+	!,
+	Rel is 100*(T/TB),
+	format('~w ~`.t ~D msec~45|~t(~0f%~6+)', [Test, T, Rel]).
+human_time(Test, T) :-
+	format('~w ~`.t ~D msec~45|', [Test, T]).
+
+base_performance(Test, T, RSS) :-
+	getenv('BASE', CSVFile),
+	base_performance(CSVFile, Test, T, RSS).
+
+base_performance(CSVFile, Test, T, RSS) :-
+	csv_read_file(CSVFile, Rows),
+	member(row(Test, T, RSS), Rows),
+	!.
 
 verbose(T) :-
 	getenv('VERBOSE', y), !,
@@ -39,29 +80,3 @@ verboseln(T) :-
 	getenv('VERBOSE', y), !,
 	writeln(T).
 verboseln(_).
-
-
-hprolog_time(24,     '500fib-hprolog.pl').
-hprolog_time(33,     '750fib-hprolog.pl').
-hprolog_time(46,     '1000fib-hprolog.pl').
-hprolog_time(982,    '10kfib-hprolog.pl').
-hprolog_time(205,    '20krecognize-hprolog.pl').
-hprolog_time(503,    '50krecognize-hprolog.pl').
-hprolog_time(767,    '500naiveReverse-hprolog.pl').
-hprolog_time(2800,   '1000naiveReverse-hprolog.pl').
-hprolog_time(44,     '2000shuttle-hprolog.pl').
-hprolog_time(138,    '5000shuttle-hprolog.pl').
-hprolog_time(582,    '20000shuttle-hprolog.pl').
-hprolog_time(1586,   '50000shuttle-hprolog.pl').
-hprolog_time(271,    '10kpingpong-hprolog.pl').
-hprolog_time(490,    '20kpingpong-hprolog.pl').
-hprolog_time(653,    '50pDblFstLoop-hprolog.pl').
-hprolog_time(4638,   '100pDblFstLoop-hprolog.pl').
-hprolog_time(162,    '50pDoubleFirst-hprolog.pl').
-hprolog_time(989,    '100pDoubleFirst-hprolog.pl').
-hprolog_time(6785,   '200pDoubleFirst-hprolog.pl').
-hprolog_time(110463, '500pDoubleFirst-hprolog.pl').
-hprolog_time(1914,   'pyramid500-hprolog.pl').
-hprolog_time(108662, 'bintree18-hprolog.pl').
-hprolog_time(3001,   'testJoins-hprolog.pl').
-hprolog_time(6444,   'mondial-hprolog.pl').
