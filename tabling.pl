@@ -28,6 +28,7 @@ print_rss(RSS0) :-
 
 human_rss(RSS) :-
 	base(_, _, RSS0),
+	RSS0 > 0,
 	Rel is 100*(RSS/RSS0),
 	format(' ~`.t ~DKb RSS~70|~t(~0f%~6+)~n', [RSS, Rel]).
 human_rss(RSS) :-
@@ -58,7 +59,7 @@ human_time(Test, T) :-
 	assertz(base(Test, TB, RSS)),
 	!,
 	Rel is 100*(T/TB),
-	format('~w ~`.t ~D msec~45|~t(~0f%~6+)', [Test, T, Rel]).
+	format('~w ~`.t ~D msec~45|~t(~0f%~7+)', [Test, T, Rel]).
 human_time(Test, T) :-
 	format('~w ~`.t ~D msec~45|', [Test, T]).
 
@@ -67,9 +68,12 @@ base_performance(Test, T, RSS) :-
 	base_performance(CSVFile, Test, T, RSS).
 
 base_performance(CSVFile, Test, T, RSS) :-
-	csv_read_file(CSVFile, Rows),
-	member(row(Test, T, RSS), Rows),
-	!.
+	csv_read_file(CSVFile, Rows, [strip(true)]),
+	(   member(row(Test, T, RSS), Rows)
+	->  true
+	;   member(row(Test, T), Rows)
+	->  RSS = 0
+	).
 
 verbose(T) :-
 	getenv('VERBOSE', y), !,
