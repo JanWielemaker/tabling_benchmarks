@@ -28,7 +28,7 @@ if [ -z "$1" ]; then
 	 testJoins
 	 mondial"
 else
-  tests="$(echo "$*" | sed 's/-hprolog.pl//g')"
+  tests="$(echo "$*" | sed 's/-swi.pl//g')"
 fi
 
 export CSV BASE
@@ -36,5 +36,5 @@ echo "# Reporting relative to $BASE; storing in $CSV"
 
 for f in $tests; do
 # echo $SWIPL running test $f
-  $SWIPL -O -g go,halt --stack_limit=8g $f-hprolog.pl || exit 1
+  $SWIPL -O -g go,halt --stack_limit=8g $f-swi.pl tabling.pl || exit 1
 done

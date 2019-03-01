@@ -1,21 +1,10 @@
 :- table a/2.
-:- import format/2 from format.
 
 a(X,Y) :-
   a(X,Z),  a(Z,Y).
 a(X,Y) :- e(X,Y).
 
-go :- 
-  cputime(Start),
-  a(X,Y),
-  cputime(End),
-  T is (End-Start) * 1000,
-  write('% 100loop-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
-
-print_solutions :-
-  a(X,Y),
-  format('XSBsol a(~w,~w)~n',[X,Y]),
-  fail.
+entry(a(_,_)).
 
 % Test facts
 e(0,1).

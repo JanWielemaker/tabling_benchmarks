@@ -1,18 +1,12 @@
 /***********************************************************
-taken from "Extension Table Built-ins for Prolog", 
+taken from "Extension Table Built-ins for Prolog",
 by Chang-Guan Fa & Suzanne W. Dietrich
 Software Practive and Experience, Vol22, No.7, 573-597, 1992.
 ***********************************************************/
 
 :- table a/2.
 
-go:-
-    cputime(Start),
-    a(1,50001),
-    cputime(End),
-    T is (End-Start) * 1000,
-    write('% 50krecognize-xsb.pl: execution time ='),write(T), write(' milliseconds'),nl.
-
+entry(a(1,50001)).
 
 a(F,L) :- t(F,a,L).
 a(F,L) :- a(F,M), t(M,b,L).

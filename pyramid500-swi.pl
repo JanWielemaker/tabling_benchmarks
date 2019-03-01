@@ -1,29 +1,17 @@
-:- import format/2 from format.
-
-go :- 
-  cputime(Start),
-  path(_X,_Y),
-  cputime(End),
-  T is (End-Start) * 1000,
-  write('% rocha7-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
-
-print_solutions :-
-  path(X,Y),
-  format('XSBsol path(~w,~w)~n',[X,Y]),
-  fail.
+entry(path(_X,_Y)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
 %% File:     test_path_right_last.pl
 %% Added by: Miguel Areias and Ricardo Rocha
-%% Program:  Right recursive path definition 
+%% Program:  Right recursive path definition
 %%           with the recursive clause last
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % time_query:- path(X,Y),
 %              fail.
-% 
+%
 % debug_query:- path(X,Y),
 %               query_output([X, ' - ', Y, '\n']),
 %               fail.

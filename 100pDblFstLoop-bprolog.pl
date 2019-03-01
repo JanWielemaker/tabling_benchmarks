@@ -5,12 +5,7 @@ a(X,Y) :-
   a(X,Z),  a(Z,Y).
 a(X,Y) :- e(X,Y).
 
-go :- 
-  cputime(Start),
-  a(X,Y),
-  cputime(End),
-  T is End - Start,
-  write('% 100loop-bprolog.pl: execution time ='), write(T), write(' milliseconds'),nl.
+entry(a(_,_)).
 
 print_solutions :-
   a(X,Y),

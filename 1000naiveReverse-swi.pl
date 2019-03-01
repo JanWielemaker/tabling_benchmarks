@@ -1,9 +1,8 @@
 /***********************************************************
-taken from "Extension Table Built-ins for Prolog", 
+taken from "Extension Table Built-ins for Prolog",
 by Chang-Guan Fa & Suzanne W. Dietrich
 Software Practive and Experience, Vol22, No.7, 573-597, 1992.
 ***********************************************************/
-:- import format/2 from format.
 :- table nrev/2.
 
 print_solutions :-
@@ -11,15 +10,8 @@ print_solutions :-
   %format('XSBsol nrev(~w,~w)~n',[X,Y]),
   fail.
 
-go:-
-    cputime(Start),
-    data(List),
-    nrev(List,Result),
-    cputime(End),
-    write('% Result = '), writeln(Result),
-    T is (End-Start) * 1000,
-    write('% 1000naiveReverse-xsb.pl: execution time ='),write(T), write(' milliseconds'),nl.
-
+entry(nrev(List,_Result)) :-
+  data(List).
 
 nrev([],[]).
 nrev([X|Rest], Result) :-

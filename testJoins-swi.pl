@@ -1,16 +1,4 @@
-:- import format/2 from format.
-
-go :- 
-  cputime(Start),
-  q(_X),
-  cputime(End),
-  T is (End-Start) * 1000,
-  write('% rocha11-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
-
-print_solutions :-
-  q(X),
-  format('XSBsol q(~w)~n',[X]),
-  fail.
+entry(q(_)).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%
@@ -20,7 +8,7 @@ print_solutions :-
 
 % time_query:- q(X),
 %              fail.
-% 
+%
 % debug_query:- q(X),
 %               query_output([X, '\n']),
 %               fail.

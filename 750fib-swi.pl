@@ -10,15 +10,7 @@
 
 :- ['./tabling.pl'].
 
-go :- 
-    N = 750,
-    verbose('OK, N = '), verboseln(N),
-    cputime(Start),
-    fib(N, Fib), 
-    cputime(End),
-    verbose('Fib of '), verbose(N), verbose(' is '), verboseln(Fib),
-    T is End-Start,
-    print_time(T).
+entry(fib(750,_Fib)).
 
 fib(X,Y) :-
   start_tabling(fib(X,Y),fib_aux(X,Y)).
