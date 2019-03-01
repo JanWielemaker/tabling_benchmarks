@@ -1,3 +1,23 @@
+:- if(current_predicate(entry/1)).
+
+go :-
+	abolish_all_tables,
+	entry(Goal),
+	rss(RSS0),
+	cputime(T0),
+	call(Goal),
+	cputime(T1),
+	rss(RSS1),
+	T is T1 - T0,
+	RSS is RSS1 - RSS0,
+	print_result(T, RSS).
+
+print_result(T, RSS) :-
+	print_time(T),
+	print_rss(RSS).
+
+:- endif.
+
 :- use_module(procps).
 
 :- dynamic
@@ -13,8 +33,7 @@ rss(Bytes) :-
 	Bytes = Stat.rss.
 
 print_rss(RSS0) :-
-	rss(RSS1),
-	RSS is round((RSS1-RSS0)/1024),
+	RSS is round(RSS0/1024),
 	(   getenv('CSV', yes)
 	->  format(',~d~n', [RSS])
 	;   getenv('CSV', CSVFile)
@@ -34,7 +53,7 @@ human_rss(RSS) :-
 human_rss(RSS) :-
 	format(' ~`.t ~DKb RSS~70|~n', [RSS]).
 
-term_expansion((go:-Body), (go:-(rss(RSS0),Body,print_rss(RSS0)))).
+term_expansion((go:-Body), (go:-(rss(RSS0),Body,rss(RSS1),RSS is RSS1-RSS0, print_rss(RSS)))).
 
 print_time(T) :-
 	current_test(Test),
@@ -49,6 +68,11 @@ print_time(T) :-
 	;   human_time(Test, T)
 	).
 
+current_test(Test) :-
+	source_file(entry(_), File),
+	file_base_name(File, Base),
+	atom_concat(Test, '-swi.pl', Base),
+	!.
 current_test(Test) :-
 	source_file(go, File),
 	file_base_name(File, Base),
