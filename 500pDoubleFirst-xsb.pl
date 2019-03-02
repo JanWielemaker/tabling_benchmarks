@@ -5,12 +5,12 @@ a(X,Y) :-
   a(X,Z),  a(Z,Y).
 a(X,Y) :- e(X,Y).
 
-go :- 
+go :-
   cputime(Start),
   a(X,Y),
   cputime(End),
   T is (End-Start) * 1000,
-  write('% 500vertices-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  write('% 500pDoubleFirst-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
 
 print_solutions :-
   a(X,Y),

@@ -5,7 +5,7 @@ go :-
   queryrule(_X,_Y,_Z),
   cputime(End),
   T is (End - Start) * 1000,
-  write('% rocha8-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  write('% mondial-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
 
 print_solutions :-
   queryrule(X,Y,Z),
@@ -23,7 +23,7 @@ print_solutions :-
 
 % time_query:- queryrule(X,Y,Z),
 %              fail.
-% 
+%
 % debug_query:- queryrule(X,Y,Z),
 %               query_output([X, ' - ', Y, ' - ', Z, '\n']),
 %             fail.
@@ -40,8 +40,8 @@ isa(prov(Y,X),provi):- p(_,_,X,Y).
 att(prov(Y,X),number,A):- p(A,_,X,Y).
 att(prov(Y,X),number2,D):- p(_,D,X,Y).
 
-p(A,D,X,Y):- 
-   province(Y,X,D,_,_,_), 
+p(A,D,X,Y):-
+   province(Y,X,D,_,_,_),
    city(_,X,Y,A,_,_).
 
 queryrule(X,A,D):-

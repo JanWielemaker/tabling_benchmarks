@@ -5,12 +5,12 @@ a(X,Y) :-
   a(X,Z),  a(Z,Y).
 a(X,Y) :- e(X,Y).
 
-go :- 
+go :-
   cputime(Start),
   a(X,Y),
   cputime(End),
   T is (End-Start) * 1000,
-  write('% 50loop-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
+  write('% 50pDblFstLoop-xsb.pl: execution time ='), write(T), write(' milliseconds'),nl.
 
 print_solutions :-
   a(X,Y),

@@ -6,7 +6,10 @@ Software Practive and Experience, Vol22, No.7, 573-597, 1992.
 
 :- table a/2.
 
-entry(a(1,50001)).
+entry(a(1,50001)) :-
+    t(17,_,_),
+    t(_,a,_),
+    !.
 
 a(F,L) :- t(F,a,L).
 a(F,L) :- a(F,M), t(M,b,L).

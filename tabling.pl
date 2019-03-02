@@ -108,3 +108,21 @@ verboseln(T) :-
 	getenv('VERBOSE', y), !,
 	writeln(T).
 verboseln(_).
+
+print_version :-
+	current_prolog_flag(version_git, V),
+	writeln(V),
+	halt.
+
+total :-
+	current_prolog_flag(argv, [CSV, Base]),
+	total_time(CSV, T),
+	total_time(Base, B),
+	Perc is 100*T/B,
+	format('~N~`-t~16|~nTotal: ~D msec (was ~D, ~0f%)~n', [T, B, Perc]),
+	halt.
+
+total_time(File, Total) :-
+	csv_read_file(File, Rows, [strip(true)]),
+	maplist(arg(2), Rows, Times),
+	sumlist(Times, Total).

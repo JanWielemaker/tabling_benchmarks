@@ -1,6 +1,7 @@
 SWIPL=${SWIPL-swipl}
-BASE=${BASE-stable.csv}
-CSV=${CSV-times-$$.csv}
+BASE=${BASE-$(hostname)/stable.csv}
+GITVERSION="$($SWIPL -g print_version tabling.pl)"
+CSV=${CSV-times-$GITVERSION.csv}
 
 if [ -z "$1" ]; then
   tests="500fib
@@ -34,7 +35,10 @@ fi
 export CSV BASE
 echo "# Reporting relative to $BASE; storing in $CSV"
 
+rm -f $CSV
 for f in $tests; do
 # echo $SWIPL running test $f
   $SWIPL -O -g go,halt --stack_limit=8g $f-swi.pl tabling.pl || exit 1
 done
+
+$SWIPL -g total tabling.pl $CSV $BASE
