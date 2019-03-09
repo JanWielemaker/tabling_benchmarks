@@ -5,12 +5,28 @@ go :-
 	entry(Goal),
 	rss(RSS0),
 	cputime(T0),
-	call(Goal),
+	run(Goal),
 	cputime(T1),
 	rss(RSS1),
 	T is T1 - T0,
 	RSS is RSS1 - RSS0,
 	print_result(T, RSS).
+
+run(Goal) :-
+	getenv('PROFILE', Atom),
+	atom_number(Atom, Times),
+	!,
+	profile(run(Times, Goal)).
+run(Goal) :-
+	once(Goal).
+
+run(N, Goal) :-
+	succ(N2, N),
+	!,
+	abolish_all_tables,
+	once(Goal),
+	run(N2, Goal).
+run(_,_).
 
 print_result(T, RSS) :-
 	print_time(T),
