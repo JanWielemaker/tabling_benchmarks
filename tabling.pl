@@ -1,6 +1,3 @@
-:- use_module('/ufs/wielemak/src/swipl-devel/linux/gc_tune').
-%:- debug(tune_gc).
-
 :- if(current_predicate(entry/1)).
 
 go :-
