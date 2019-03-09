@@ -1,13 +1,13 @@
-:- if(current_predicate(entry/1)).
+:- use_module(procps).
 
 go :-
 	abolish_all_tables,
 	entry(Goal),
-	rss(RSS0),
+	memory_usage(RSS0),
 	cputime(T0, Gc0),
 	run(Goal),
 	cputime(T1, Gc1),
-	rss(RSS1),
+	memory_usage(RSS1),
 	T is T1 - T0,
 	Gc is Gc1 - Gc0,
 	RSS is RSS1 - RSS0,
@@ -31,11 +31,7 @@ run(_,_).
 
 print_result(T, Gc, RSS) :-
 	print_time(T, Gc),
-	print_rss(RSS).
-
-:- endif.
-
-:- use_module(procps).
+	print_memory_usage(RSS).
 
 :- dynamic
 	base/3.
@@ -49,13 +45,16 @@ cputime(Msec, GCmsec) :-
 cputime(Msec, 0) :-
 	statistics(runtime, [Msec,_]).
 
-rss(Bytes) :-
+memory_usage(Bytes) :-
+	statistics(table_space_used, Bytes),
+	!.
+memory_usage(Bytes) :-
 	garbage_collect,
 	garbage_collect_atoms,
 	procps_stat(Stat),
 	Bytes = Stat.rss.
 
-print_rss(RSS0) :-
+print_memory_usage(RSS0) :-
 	RSS is round(RSS0/1024),
 	(   getenv('CSV', yes)
 	->  format(',~d~n', [RSS])
@@ -64,19 +63,17 @@ print_rss(RSS0) :-
 		open(CSVFile, append, Out),
 		format(Out, ',~d~n', [RSS]),
 		close(Out)),
-	    human_rss(RSS)
-	;   human_rss(RSS)
+	    human_memory_usage(RSS)
+	;   human_memory_usage(RSS)
 	).
 
-human_rss(RSS) :-
+human_memory_usage(RSS) :-
 	base(_, _, RSS0),
 	RSS0 > 0,
 	Rel is 100*(RSS/RSS0),
-	format(' ~`.t ~DKb RSS~70|~t(~0f%~6+)~n', [RSS, Rel]).
-human_rss(RSS) :-
-	format(' ~`.t ~DKb RSS~70|~n', [RSS]).
-
-term_expansion((go:-Body), (go:-(rss(RSS0),Body,rss(RSS1),RSS is RSS1-RSS0, print_rss(RSS)))).
+	format(' ~`.t ~DKb TBL~70|~t(~0f%~6+)~n', [RSS, Rel]).
+human_memory_usage(RSS) :-
+	format(' ~`.t ~DKb TBL~70|~n', [RSS]).
 
 print_time(T, Gc) :-
 	current_test(Test),
