@@ -1,19 +1,23 @@
+:- use_module('/ufs/wielemak/src/swipl-devel/linux/gc_tune').
+%:- debug(tune_gc).
+
 :- if(current_predicate(entry/1)).
 
 go :-
 	abolish_all_tables,
 	entry(Goal),
 	rss(RSS0),
-	cputime(T0),
+	cputime(T0, Gc0),
 	call(Goal),
-	cputime(T1),
+	cputime(T1, Gc1),
 	rss(RSS1),
 	T is T1 - T0,
+	Gc is Gc1 - Gc0,
 	RSS is RSS1 - RSS0,
-	print_result(T, RSS).
+	print_result(T, Gc, RSS).
 
-print_result(T, RSS) :-
-	print_time(T),
+print_result(T, Gc, RSS) :-
+	print_time(T, Gc),
 	print_rss(RSS).
 
 :- endif.
@@ -23,8 +27,14 @@ print_result(T, RSS) :-
 :- dynamic
 	base/3.
 
-cputime(T) :-
-	statistics(runtime, [T,_]).
+cputime(Msec, GCmsec) :-
+	!,
+	statistics(cputime, T),
+	statistics(gctime, GC),
+	Msec is round(1000*(T-GC)),
+	GCmsec is round(1000*GC).
+cputime(Msec, 0) :-
+	statistics(runtime, [Msec,_]).
 
 rss(Bytes) :-
 	garbage_collect,
@@ -55,7 +65,7 @@ human_rss(RSS) :-
 
 term_expansion((go:-Body), (go:-(rss(RSS0),Body,rss(RSS1),RSS is RSS1-RSS0, print_rss(RSS)))).
 
-print_time(T) :-
+print_time(T, Gc) :-
 	current_test(Test),
 	(   getenv('CSV', yes)
 	->  format('~w,~d', [Test, T])
@@ -64,8 +74,8 @@ print_time(T) :-
 		open(CSVFile, append, Out),
 		format(Out, '~w,~d', [Test, T]),
 		close(Out)),
-	    human_time(Test, T)
-	;   human_time(Test, T)
+	    human_time(Test, T, Gc)
+	;   human_time(Test, T, Gc)
 	).
 
 current_test(Test) :-
@@ -78,14 +88,14 @@ current_test(Test) :-
 	file_base_name(File, Base),
 	atom_concat(Test, '-hprolog.pl', Base).
 
-human_time(Test, T) :-
+human_time(Test, T, Gc) :-
 	base_performance(Test, TB, RSS),
 	assertz(base(Test, TB, RSS)),
 	!,
 	Rel is 100*(T/TB),
-	format('~w ~`.t ~D msec~45|~t(~0f%~7+)', [Test, T, Rel]).
-human_time(Test, T) :-
-	format('~w ~`.t ~D msec~45|', [Test, T]).
+	format('~w ~`.t ~D+~35|~D ~tmsec~42|~t(~0f%~7+)', [Test, T, Gc, Rel]).
+human_time(Test, T, Gc) :-
+	format('~w ~`.t ~D+~D msec~45|', [Test, T, Gc]).
 
 base_performance(Test, T, RSS) :-
 	getenv('BASE', CSVFile),
