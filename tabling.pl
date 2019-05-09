@@ -46,6 +46,7 @@ cputime(Msec, 0) :-
 	statistics(runtime, [Msec,_]).
 
 memory_usage(Bytes) :-
+	fail,
 	statistics(table_space_used, Bytes),
 	!.
 memory_usage(Bytes) :-
@@ -128,6 +129,11 @@ verboseln(T) :-
 	getenv('VERBOSE', y), !,
 	writeln(T).
 verboseln(_).
+
+clean :-
+	abolish_all_tables,
+	garbage_collect,
+	garbage_collect_atoms.
 
 print_version :-
 	current_prolog_flag(version_git, V),
