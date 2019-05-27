@@ -17,7 +17,8 @@ run(Goal) :-
 	getenv('PROFILE', Atom),
 	atom_number(Atom, Times),
 	!,
-	profile(run(Times, Goal)).
+	profile(run(Times, Goal)),
+	prolog.
 run(Goal) :-
 	once(Goal).
 
